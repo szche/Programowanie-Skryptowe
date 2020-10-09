@@ -1,5 +1,4 @@
-
-lista = []
+from . import lista
 
 def zapisz(cyfry):
     global lista

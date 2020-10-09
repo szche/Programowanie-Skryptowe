@@ -1,5 +1,4 @@
-
-slownik = {}
+from . import slownik
 
 def zapisz( cyfry ):
     for cyfra in cyfry:
