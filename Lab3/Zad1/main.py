@@ -1,7 +1,7 @@
 from klasa import Klasa
 
-obiekt1 = Klasa(['a', 'b', 'c'])
-obiekt2 = Klasa(['x', 'y', 'z'])
+obiekt1 = Klasa(['a', 'b', 'c'], 4, 5)
+obiekt2 = Klasa(['x', 'y', 'z'], 4, 5)
 print('*' * 30)
 print("Po utworzeniu obiektów")
 print('\tKlasa.tab   ->', Klasa.tab)
