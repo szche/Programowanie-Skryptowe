@@ -15,6 +15,7 @@ def find(str):
         znalezione["wyraz"] = znajdz_wyraz[0]
     return znalezione
 
+
 def find_new_length(obj):
     char = obj[0][0]
     add = char
