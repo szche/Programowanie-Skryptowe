@@ -8,6 +8,7 @@ class Klasa(object):
         self.tab = tablica
         self._zmienna1 = _zmienna1
         self.__zmienna2 = __zmienna2
+        print(self.tab, Klasa.tab)
 
     def __del__(self):
         print("Wywołano metodę '__del__()'")
