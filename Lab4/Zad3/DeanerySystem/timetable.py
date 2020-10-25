@@ -67,6 +67,10 @@ class Timetable1(object):
         # Jesli czas zbyt pozno / wczesnie
         if term_time < 480 or term_time > 1110:
             return True
+        # Jesli podano zly czas
+        table_values = self.table[term_day][1].keys()
+        if term_time not in table_values:
+            return True
         # Empty string means busy
         if type(self.table[term_day][1][term_time]) == type(""):
             return False
