@@ -147,4 +147,14 @@ class Lesson:
         self.term.hour = new_time["hour"]
         self.term.minute = new_time["minute"]
 
+    def move(self, action: Action):
+        print(action)
+        if action == Action.DAY_EARLIER:
+            self.earlierDay()
+        elif action == Action.DAY_LATER:
+            self.laterDay()
+        elif action == Action.TIME_EARLIER:
+            self.earlierTime()
+        elif action == Action.TIME_LATER:
+            self.laterTime()
     
