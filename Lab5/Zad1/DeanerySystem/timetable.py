@@ -4,6 +4,7 @@ from .lesson import Lesson
 from .action import Action
 from .day import Day
 from copy import deepcopy
+from .breakterm import Break
 
 
 class Timetable1(object):
@@ -27,7 +28,7 @@ class Timetable1(object):
         output += "\n\t\t"
         output += "*" * ((13*7) + 8)
         output += "\n"
-        for godzina in self.hours:
+        for godzina in sorted(self.hours):
             t_start = to_hours_minutes(godzina[0])
             t_end = to_hours_minutes(godzina[1])
             output += f'  {t_start["hour"]}:{t_start["minute"]:02d}-{t_end["hour"]}:{t_end["minute"]:02d}\t*'
@@ -38,6 +39,8 @@ class Timetable1(object):
                     if len(nazwa_przedmiotu) > 13:
                         nazwa_przedmiotu = nazwa_przedmiotu[:10] + "..."
                     output += f"{nazwa_przedmiotu: <13}*"
+                elif type(lesson) == Break:
+                    output += "     ---     *"
                 else:
                     output += (" " * 13) + "*"
             output += "\n\t\t"
