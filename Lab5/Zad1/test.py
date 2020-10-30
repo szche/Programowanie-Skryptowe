@@ -3,10 +3,19 @@ from DeanerySystem.term import Term, to_hours_minutes
 from DeanerySystem.day import Day 
 from DeanerySystem.timetable import Timetable1
 from DeanerySystem.action import Action 
+from DeanerySystem.timetable2 import Timetable2 
+from DeanerySystem.breakterm import Break
 
+przerwa = Break(Term(9, 30, None, 5))
+przerwa2 = Break(Term(11, 5, None, 10))
+przerwa3 = Break(Term(12, 45, None, 5))
+przerwa4 = Break(Term(14, 20, None, 20))
+przerwa5 = Break(Term(16, 10, None, 5))
+przerwa6 = Break(Term(17, 45, None, 5))
+przerwa7 = Break(Term(19, 20, None, 10))
 # Test parsera komend
 def test_parser():
-    plan = Timetable1()
+    plan = Timetable2([przerwa, przerwa2, przerwa3, przerwa4, przerwa5, przerwa6, przerwa7])
     lista_polecen = ["d-", "d-", "t+", "t-", "d+", "t+", "t-"]
     lista_parsed = plan.parse(lista_polecen)
     lista_akcji = [Action.DAY_EARLIER, Action.DAY_EARLIER, Action.TIME_LATER, \
@@ -14,43 +23,55 @@ def test_parser():
     assert lista_parsed == lista_akcji
 
 def test_busy_put():
-    plan = Timetable1()
-    lesson = Lesson(Term(9, 30, Day.TUE), "Programowanie Skryptowe", "Stanisław Polak", 2)
+    plan = Timetable2([przerwa, przerwa2, przerwa3, przerwa4, przerwa5, przerwa6, przerwa7])
+    lesson = Lesson(Term(8, 0, Day.TUE), "Programowanie Skryptowe", "Stanisław Polak", 2)
     # Wstawiamy powyzsza lekcje do planu, powinno sie udac
     assert plan.put(lesson) == True
-    lesson2 = Lesson(Term(9, 30, Day.TUE), "Programowanie Skryptowe", "Stanisław Polak", 2)
+    lesson2 = Lesson(Term(8, 0, Day.TUE), "Programowanie Skryptowe", "Stanisław Polak", 2)
     # Teraz wstawiamy ta sama lekcje drugi raz, nie powinno sie udac
     assert plan.put(lesson2) == False
-    # Teraz sprawdzmy czy mozna wstawic w inny termin, powinno sie udac
-    lesson2 = Lesson(Term(18, 30, Day.TUE), "Programowanie Skryptowe", "Stanisław Polak", 2)
-    assert plan.put(lesson2) == True
+    # Teraz wstawiamy ta sama lekcje w miejsce przerwy bez skipBreaks, powinno sie nie udac
+    lesson2 = Lesson(Term(9, 30, Day.TUE), "Programowanie Skryptowe", "Stanisław Polak", 2, skipBreaks=False)
+    assert plan.put(lesson2) == False
+
+    # Sprawdzamy czy dziala SkipBreaks 
+    lesson2 = Lesson(Term(8, 0, Day.TUE), "Programowanie Skryptowe", "Stanisław Polak", 2, skipBreaks=True)
     # sprawdzmy czy mozna przeniesc lesson2 w miejsce lesson
-    assert plan.can_be_transferred_to(lesson2, Term(9, 30, Day.TUE)) == False
-    # A co jesli ten termin jest wolny, ale nie dozwolony?
-    assert plan.can_be_transferred_to(lesson2, Term(21, 30, Day.TUE)) == False
+    assert plan.can_be_transferred_to(lesson2, Term(9, 30, Day.TUE))[0] == True
+
 
 def test_parse():
-    plan = Timetable1()
-    lesson1 = Lesson(Term(9, 30, Day.TUE), "Programowanie Skryptowe", "Stanisław Polak", 2)
-    lesson2 = Lesson(Term(8, 0, Day.MON), "Kryptografia", "Stanisław Polak", 2)
-    lesson3 = Lesson(Term(12, 30, Day.FRI), "Fizyka 2", "Stanisław Polak", 2)
-    plan.put(lesson1)
-    plan.put(lesson2)
-    plan.put(lesson3)
-    assert plan.create_lesson_queue() == [lesson2, lesson1, lesson3]
-    polecenia = plan.perform(plan.parse( ["t-", "d-", "d+", "d+", "t+", "t+"] ))
-    # "t-" dla Kryptografii - NIE dozwolone     -> Poniedzialek 8:00
-    # "d-" dla Prog. Skryp. - dozwolone         -> Poniedzialek 9:30
-    # "d+" dla Fizyki 2 - NIE dozwolone         -> Piatek 12:30
-    # "d+" dla Kryptografii - dozwolone         -> Wtorek 8:00
-    # "t+" dla Prog. Skryp. - dozwolone         -> Poniedzialek 11:00
-    # "t+" dla Fizyki 2 - dozwolone             -> Piatek 14:00
-    lesson1_changed = Lesson(Term(11, 0, Day.MON), "Programowanie Skryptowe", "Stanisław Polak", 2)
-    lesson2_changed = Lesson(Term(8, 0, Day.TUE), "Kryptografia", "Stanisław Polak", 2)
-    lesson3_changed = Lesson(Term(14, 0, Day.FRI), "Fizyka 2", "Stanisław Polak", 2)
-    print(plan)
-    assert plan.get( lesson1_changed.term ) == lesson1_changed
-    assert plan.get( lesson2_changed.term ) == lesson2_changed
-    assert plan.get( lesson3_changed.term ) == lesson3_changed
+    plan = Timetable2([przerwa, przerwa2, przerwa3, przerwa4, przerwa5, przerwa6, przerwa7])
+    # Zaimportuj lekcje z pliku plan.txt
+    lekcje = []
+    with open("plan.txt", "r") as file1:
+        for line in file1:
+            lekcja = line.strip().replace("\t", "").split(",")
+            lesson = Lesson(Term(int(lekcja[0]), int(lekcja[1]), Day(int(lekcja[2]))),
+                            lekcja[3], lekcja[4], 2)
+            lekcje.append(lesson)
     
+    #Zapelnij plan lekcjami z pliku
+    for lekcja in lekcje:
+        plan.put(lekcja)
+    print(plan)
 
+    # Ciag przesuniec
+    lista_polecen = ["d+", "d+", "t+", "t-", "d+", "t+", "t-", "d+", "d-"]
+    lista_parsed = plan.parse(lista_polecen)
+    plan.perform(lista_parsed)
+
+    assert plan.get(Term(8, 0, Day.MON)).name == "Kryptografia" 
+    assert plan.get(Term(9, 35, Day.MON)).name == "Inf. Sledcza" 
+    assert plan.get(Term(12, 50, Day.MON)).name == "Inf. Sledcza"
+    assert plan.get(Term(8, 0, Day.TUE)).name == "Bezp. Sieci"
+    assert plan.get(Term(9, 35, Day.TUE)).name == "Bezp. Apli"
+    assert plan.get(Term(11, 15, Day.TUE)).name == "Kryptografia"
+    assert plan.get(Term(12, 50, Day.TUE)).name == "Bezp. Apli"
+    assert plan.get(Term(8, 0, Day.WED)).name == "Sysopy" 
+    assert plan.get(Term(9, 35, Day.THU)).name == "Sysopy" 
+    assert plan.get(Term(11, 15, Day.THU)).name == "Prog. Skrypt." 
+    assert plan.get(Term(12, 50, Day.THU)).name == "Prog. Skrypt." 
+    assert plan.get(Term(17, 50, Day.THU)).name == "Bezp. Sieci" 
+    assert plan.get(Term(9, 35, Day.FRI)).name == "Fizyka"
+    assert plan.get(Term(11, 15, Day.FRI)).name == "Fizyka"

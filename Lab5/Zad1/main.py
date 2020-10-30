@@ -30,4 +30,11 @@ for lekcja in lekcje:
     plan.put(lekcja)
 print(plan)
 
+# Ciag przesuniec
+lista_polecen = ["d+", "d+", "t+", "t-", "d+", "t+", "t-", "d+", "d-"]
+lista_parsed = plan.parse(lista_polecen)
+plan.perform(lista_parsed)
+print("\nPlan lekcji po zmianach:")
+print(plan)
+
 

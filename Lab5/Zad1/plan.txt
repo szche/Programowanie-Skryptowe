@@ -10,6 +10,5 @@
 11,	15,	3,	Prog. Skrypt.,	Stanislaw Polak
 12,	50,	3,	Prog. Skrypt.,	Stanislaw Polak
 17,	50,	3,	Bezp. Sieci,	Jacek Rzasa
-19,	20,	3,	Fizyka,			Dawid Nowak
 9,	35,	4,	Fizyka,			Krystyna Schneider
 11,	15,	4,	Fizyka,			Katarzyna Zakrzewsak

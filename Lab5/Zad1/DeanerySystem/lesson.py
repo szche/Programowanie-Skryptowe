@@ -19,13 +19,15 @@ class Lesson:
         Day.SUN: (480, 1200), 
     }
 
-    def __init__(self, term, name, teacherName, year, full_time=True):
+    def __init__(self, term, name, teacherName, year, full_time=True, skipBreaks=True):
         self.term = term
         self.name = name
         self.teacherName = teacherName
         self.year = year
         self.full_time = full_time
         self.allowed_terms = full_time
+        self.skipBreaks = skipBreaks
+
     
     @property
     def term(self):

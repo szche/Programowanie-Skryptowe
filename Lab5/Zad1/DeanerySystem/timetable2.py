@@ -5,6 +5,7 @@ from .term import Term, to_hours_minutes
 from .day import Day
 from .lesson import Lesson
 from copy import deepcopy
+from .action import Action
 
 
 class Timetable2(Timetable1):
@@ -35,7 +36,6 @@ class Timetable2(Timetable1):
         for i in range(7):
             self.table.append( [Day(i), deepcopy(day_table)] )
 
-    
     def busy(self, term: Term) -> bool:
         term_time = term.count_time
         term_day = term.day.value
@@ -51,5 +51,75 @@ class Timetable2(Timetable1):
         # Empty string means busy
         if type(self.table[term_day][1][term_time]) == type(""):
             return False
-        return True 
+        if type(self.table[term_day][1][term_time]) == Lesson:
+            return True
+        if type(self.table[term_day][1][term_time]) == Break:
+            return True
+        return False 
+
+    def can_be_transferred_to(self, lesson: Lesson, term: Term):
+        # Jesli nie mozesz przenikac przez przerwy i termin jest zajety
+        if lesson.skipBreaks == False and self.busy(term) == True:
+            print("This term is busy!")
+            return (False, term)
+
+        # Jesli nie mozesz przenikac przez przerwy i termin jest wolny
+        if lesson.skipBreaks == False and self.busy(term) == False:
+            # Sprawdz czy term jest w dozwolonych godzinach
+            allowed_hours = lesson.allowed_terms[term.day]
+            if term.count_time < allowed_hours[0] or \
+                    term.count_time+90 > allowed_hours[1]:
+                print("Not allowed hours!")
+                return (False, term)
+                
+
+        # Jesli mozesz przenikac przez przerwy i termin jest wolny
+        if lesson.skipBreaks == True and self.busy(term) == False:
+            # Sprawdz czy term jest w dozwolonych godzinach
+            allowed_hours = lesson.allowed_terms[term.day]
+            if term.count_time < allowed_hours[0] or \
+                    term.count_time+90 > allowed_hours[1]:
+                print("Not allowed hours!")
+                return (False, term)
+
+        # Jesli mozesz przneikac przez przerwy i termin jest zajety
+        if lesson.skipBreaks == True and self.busy(term) == True:
+            # Sprawdz czy zajete przez przerwe
+            day = self.table[term.day.value]
+            if type(day[1][term.count_time]) == Break:
+                delayed_term = term.count_time + day[1][term.count_time].term.duration
+                new_term = to_hours_minutes(delayed_term)
+                term = Term(new_term["hour"], new_term["minute"], term.day)
+            else:
+                return (False, term)
+        return (True, term)
+
+    def perform(self, actions: List[Action]):
+        lesson_queue = self.create_lesson_queue()
+        counter = 0
+        for action in actions:
+            current_lesson = deepcopy(lesson_queue[counter])
+            changed_lesson = deepcopy(lesson_queue[counter])
+            if action == Action.DAY_EARLIER:
+                changed_lesson.earlierDay()
+            elif action == Action.DAY_LATER:
+                changed_lesson.laterDay()
+            elif action == Action.TIME_EARLIER:
+                changed_lesson.earlierTime()
+            elif action == Action.TIME_LATER:
+                changed_lesson.laterTime()
+            transfer_result = self.can_be_transferred_to(current_lesson, changed_lesson.term)
+            if transfer_result[0] == False:
+                counter += 1
+                lesson_queue.append(current_lesson)
+                continue
+            transfer_new_term = transfer_result[1]
+            changed_lesson.term = transfer_new_term
+            self.table[current_lesson.term.day.value][1][current_lesson.term.count_time] = ""
+            self.table[changed_lesson.term.day.value][1][changed_lesson.term.count_time] = changed_lesson
+            counter += 1
+            lesson_queue.append( changed_lesson )
+
+    
+
 

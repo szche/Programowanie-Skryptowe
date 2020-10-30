@@ -59,7 +59,7 @@ class Timetable1(object):
                 term.count_time+90 > allowed_hours[1]:
             print("Not allowed hours!")
             return False
-        return True
+        return (True, term)
 
 
 ##########################################################
