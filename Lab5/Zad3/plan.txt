@@ -1,0 +1,14 @@
+8,	0,	0,	Kryptografia,	Pawel Topa
+9,	35,	0,	Inf. Sledcza,	Lukasz Faber
+11,	15,	0,	Inf. Sledcza,	Lukasz Faber
+8,	0,	1,	Bezp. Sieci,	Jacek Rzasa
+9,	35,	1,	Bezp. Apli,		Dawid Juszka
+11,	15,	1,	Bezp. Apli,		Dawid Juszka
+8,	0,	2,	Sysopy,			Krzysztof Rzecki
+9,	35,	2,	Sysopy,			Krzysztof Rzecki
+11,	15,	2,	Kryptografia,	Pawel Topa
+11,	15,	3,	Prog. Skrypt.,	Stanislaw Polak
+12,	50,	3,	Prog. Skrypt.,	Stanislaw Polak
+17,	50,	3,	Bezp. Sieci,	Jacek Rzasa
+9,	35,	4,	Fizyka,			Krystyna Schneider
+11,	15,	4,	Fizyka,			Katarzyna Zakrzewsak
