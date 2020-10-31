@@ -6,13 +6,25 @@ from DeanerySystem.action import Action
 from DeanerySystem.timetable2 import Timetable2 
 from DeanerySystem.breakterm import Break
 
-przerwa = Break(Term(9, 30, None, 5))
-przerwa2 = Break(Term(11, 5, None, 10))
-przerwa3 = Break(Term(12, 45, None, 5))
-przerwa4 = Break(Term(14, 20, None, 20))
-przerwa5 = Break(Term(16, 10, None, 5))
-przerwa6 = Break(Term(17, 45, None, 5))
-przerwa7 = Break(Term(19, 20, None, 10))
+przerwa = Break(9, 30, 5)
+przerwa2 = Break(11, 5, 10)
+przerwa3 = Break(12, 45, 5)
+przerwa4 = Break(14, 20, 20)
+przerwa5 = Break(16, 10, 5)
+przerwa6 = Break(17, 45, 5)
+przerwa7 = Break(19, 20, 10)
+
+#Sprawdz czy przerwy dobrze sie tworza
+def Break_create():
+    przerwa = Break(9, 30, 5)
+    przerwa2 = Break(11, 5, 10)
+    przerwa3 = Break(12, 45, 5)
+    przerwa4 = Break(14, 20, 20)
+    przerwa5 = Break(16, 10, 5)
+    przerwa6 = Break(17, 45, 5)
+    przerwa7 = Break(19, 20, 10)
+    
+
 # Test parsera komend
 def test_parser():
     plan = Timetable2([przerwa, przerwa2, przerwa3, przerwa4, przerwa5, przerwa6, przerwa7])
