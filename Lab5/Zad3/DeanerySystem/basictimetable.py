@@ -39,7 +39,7 @@ class BasicTimetable:
     def put(self, lesson: Lesson) -> bool:
         # Return false if the slot is already occpuied
         if self.busy(lesson.term) == True:
-            return False
+            raise ValueError("Ten termin jest zajety")
         lesson_time = lesson.term.count_time 
         lesson_day = lesson.term.day.value
         self.table[lesson_day][1][lesson_time] = lesson

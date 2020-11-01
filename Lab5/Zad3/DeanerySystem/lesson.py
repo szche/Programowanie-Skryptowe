@@ -109,14 +109,13 @@ class Lesson:
         # Sprawdz czy dzien jest dozwolony
         if moved_day not in self.allowed_terms.keys():
             print("Nie mozna przeniesc tych zajec!")
-            return
+            raise Exception("Te godziny nie sa dozwolone!")
         # Sprawdz czy godziny sa dozwolone gdybysmy przeniesli
         # a) Jesli czas rozpoczecie jest zbyt wczesnie
         # b) Jesli czas zakonczenia jest zbyt pozno
         if self.term.count_time < self.allowed_terms[moved_day][0] or\
                 (self.term.count_time + 90) > self.allowed_terms[moved_day][1]:
-            print("Nie mozna przeniesc tych zajec!")
-            return
+            raise Exception("Nie mozna przeniesc tych zajec!")
         # Wszystko sie zgadza, mozna przenosic
         self.term.day = moved_day
 
@@ -130,8 +129,7 @@ class Lesson:
         earlier_begin_time = self.term.count_time - 90
         # Sprawdz czy godziny sa dowzolone
         if earlier_begin_time < self.allowed_terms[self.term.day][0]:
-            print("Nie mozna przeniesc tych zajec!")
-            return
+            raise Exception("Te godziny nie sa dozwolone!")
         # Wszystko sie zgadza, mozna przenosic
         new_time = to_hours_minutes( earlier_begin_time )
         self.term.hour = new_time["hour"]
@@ -142,8 +140,7 @@ class Lesson:
         later_end_time = self.term.count_time + 180
         # Sprawdz czy godziny sa dowzolone
         if later_end_time > self.allowed_terms[self.term.day][1]:
-            print("Nie mozna przeniesc tych zajec!")
-            return
+            raise Exception("Te godziny nie sa dozwolone")
         # Wszystko sie zgadza, mozna przenosic
         new_time = to_hours_minutes( later_begin_time )
         self.term.hour = new_time["hour"]
