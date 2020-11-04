@@ -10,7 +10,15 @@ from .basictimetable import BasicTimetable
 
 class Timetable2(BasicTimetable):
     def __init__(self, breaks: List[Break]):
-        self.table = []
+        self.table = {
+                "Poniedzialek": None,
+                "Wtorek": None,
+                "Sroda": None,
+                "Czwartek": None,
+                "Piatek": None,
+                "Sobota": None,
+                "Niedziela": None,
+                }
         self.hours = []
         day_table = {}
         for breakTerm in breaks:
@@ -33,6 +41,7 @@ class Timetable2(BasicTimetable):
             time = lesson_range[0]
             time += 90
             self.hours.append((lesson_range[0], lesson_range[-1] + 1))
+            self.table = []
         for i in range(7):
             self.table.append( [Day(i), deepcopy(day_table)] )
 
