@@ -5,7 +5,7 @@ def count_evens(filename):
     with open(filename, "r") as plik:
         for line in plik:
             liczby += line.strip().split()
-    return len( list( filter(lambda x: int(x) % 2 == 0, liczby) ) )
+    return len([liczba for liczba in liczby if int(liczba) % 2 == 0 ])
 
 print( sum( [count_evens(name) for name in sys.argv[1::]] ) )
 
