@@ -1,0 +1,56 @@
+aside  {
+    width: 45%;
+    float: right;
+  }
+
+  main {
+    width: 45%;
+    float: left;
+  }
+
+  nav {
+    width: 200px;
+    float: left;
+  }
+
+  nav ul {
+      margin-left: 25px;
+      margin-right: 25px;
+  }
+
+
+.azure {
+    padding: 10px;
+    margin: 10px;
+    background-color: #EFF;
+    border: 2px solid #A8A8A8;
+}
+
+
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+    .responsive-title {
+        animation-name: color_changeBR;
+        animation-duration: 1s;
+        color: red;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .responsive-title {
+        animation-name: color_changeRB;
+        animation-duration: 1s;
+        color: blue;
+    }
+
+}
+
+@keyframes color_changeRB {
+    from { color: red; }
+    to { color: blue; }
+}
+
+@keyframes color_changeBR {
+    from { color: blue; }
+    to { color: red; }
+}
