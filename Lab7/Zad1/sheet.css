@@ -27,6 +27,12 @@ aside  {
 }
 
 
+@keyframes krec {
+    0% {}
+    50% {}
+    100% {}
+}
+
 
 @media screen and (min-width: 768px) and (max-width: 992px) {
     .responsive-title {
