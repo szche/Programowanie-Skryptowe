@@ -52,7 +52,7 @@ function liczba_w_linii(napis, liczba) {
 }
 
 function dzialaj(poprzednie, tekst) {
-    var wynik = new Map;
+    var wynik = "";
     var wszystkie_linijki = []
     if (poprzednie == true) {
         wszystkie_linijki = poprzednie_linijki.concat(tekst.split("\n"));
@@ -72,17 +72,20 @@ function dzialaj(poprzednie, tekst) {
         //Same cyfry
         if(cyfry(wyraz) == wyraz.length) {
             console.log("Cyfra \"",wyraz,"\" wystepuje w liniach: ", liczba_w_linii(wszystkie_linijki, wyraz));
-            wynik.set(wyraz, liczba_w_linii(wszystkie_linijki, wyraz));
+            console.log()
+            wynik += liczba_w_linii(wszystkie_linijki, wyraz).join(", ");
+            wynik += ", ";
 
         }
         //Same litery
         if(litery(wyraz) == wyraz.length) {
             console.log("Wystapienia wyrazy \"",wyraz,"\" : ", znajdz_wystapienia(wszystkie_linijki_podzielone, wyraz));
-            wynik.set(wyraz, znajdz_wystapienia(wszystkie_linijki_podzielone, wyraz));
+            wynik = wynik + znajdz_wystapienia(wszystkie_linijki_podzielone, wyraz) + ", ";
         }
     }
 
     poprzednie_linijki = poprzednie_linijki.concat(tekst.split('\n'));
+    console.log(wynik);
     return wynik;
 }
 
