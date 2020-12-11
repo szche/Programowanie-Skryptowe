@@ -1,4 +1,5 @@
 var http = require("http");
+const { parse } = require("path");
 var url = require("url");
 const fs = require('fs').promises;
 
@@ -23,27 +24,13 @@ async function sprawdz(nazwa) {
     }
 }
 
-async function usun(nazwa, linia) {
-    const dane = await  fs.readFile(nazwa, 'utf8', function(err, data) {
-        if (err)
-        {
-            // check and handle err
-        }
-        // data is the file contents as a single unified string
-        // .split('\n') splits it at each new-line character and all splits are aggregated into an array (i.e. turns it into an array of lines)
-        // .slice(1) returns a view into that array starting at the second entry from the front (i.e. the first element, but slice is zero-indexed so the "first" is really the "second")
-        // .join() takes that array and re-concatenates it into a string
-        var linesExceptFirst = data.split('\n').slice(1).join('\n');
-        fs.writeFile(nazwa, linesExceptFirst);
+async function zapisz(nazwa, dane) {
+    await fs.writeFile(nazwa, dane, function (err) {
+        if (err) return console.log(err);
+        console.log('Zapisano');
     });
 }
 
-const removeLines = (data, lines = []) => {
-    return data
-        .split('\n')
-        .filter((val, idx) => lines.indexOf(idx) === -1)
-        .join('\n');
-}
 
 http.createServer(function(request, response) {
     /*
@@ -75,21 +62,49 @@ http.createServer(function(request, response) {
                 
                 if(usuniecie == 'usun') {
                     console.log("===== USUN LINE ======");
+                    console.log("Linia: ", linia);
+                    tresc(nazwa).then((wynik) => {
+                        var wynik_split = wynik.split('\n');
+                        var nowe_dane = wynik_split.slice(0, parseInt(linia)-1).concat(wynik_split.slice(parseInt(linia), wynik_split.length)).join('\n');
+                        console.log("Po usunieciu: ", nowe_dane);
 
-                    usun(nazwa).then((nazwa) => {
-                        console.log("Xd");
+                        zapisz(nazwa, nowe_dane).then((wynik) => {
+                            response.write('\nNowa tresc:\n');
+                            tresc(nazwa).then((wynik) => {
+                                    response.write(wynik);
+                                    response.end();
+                            });
+                        });
+
                     });
                     
                 }
                 else if(scalenie == "scal"){
                     console.log("===== SCAL LINE ======");
+
+                    console.log("Linia: ", linia);
+                    tresc(nazwa).then((wynik) => {
+                        var wynik_split = wynik.split('\n');
+                        var scalone = wynik_split.slice(parseInt(linia)-1, parseInt(linia) + 1).join("");
+                        var przed = wynik_split.slice(0, parseInt(linia) -1);
+                        var po = wynik_split.slice(parseInt(linia)+ 1, wynik_split.length);
+                        var scalone = przed.concat(scalone).concat(po).join('\n');
+
+                        zapisz(nazwa, scalone).then((wynik) => {
+                            response.write('\nNowa tresc:\n');
+                            tresc(nazwa).then((wynik) => {
+                                    response.write(wynik);
+                                    response.end();
+                            });
+                        });
+
+
+
+                    });
+
                 }
 
-                response.write('\nNowa tresc:\n');
-                tresc(nazwa).then((wynik) => {
-                        response.write(wynik);
-                        response.end();
-                });
+                
             }
             else if(wynik == "folder") {
                 response.write("Nazwa reprezentuje folder!");

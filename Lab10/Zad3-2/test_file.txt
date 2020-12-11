@@ -1,2 +1,4 @@
 Ala ma kota
-123 456 789
+ABCCDF
+23
+123
