@@ -1,0 +1,25 @@
+[
+	{
+		"operacja": "add",
+		"x": 2,
+		"y": 3
+	},
+
+	{
+		"operacja": "sub",
+		"x": 2,
+		"y": 3
+	},
+
+	{
+		"operacja": "mul",
+		"x": 2,
+		"y": 3
+	},
+
+	{
+		"operacja": "div",
+		"x": 10,
+		"y": 5
+	}
+]
