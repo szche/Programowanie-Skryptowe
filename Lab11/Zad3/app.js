@@ -18,6 +18,9 @@ app.get('/perform/:f', function (req, res) {
     console.log("Plik: ", req.params['f']);
 
     let plik = fs.readFileSync(req.params['f']);
+
+
+    
     let dane = JSON.parse(plik);
 
     dane.forEach(element => {
