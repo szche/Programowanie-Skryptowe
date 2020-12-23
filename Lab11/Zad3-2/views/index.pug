@@ -1,3 +1,14 @@
-ul
-  each val in [1, 2, 3, 4, 5]
-    li= val
+table(width='100%')
+  tr
+    td Data
+    each waluta in waluty
+      td= waluta
+
+  each data in ceny[ waluty[0] ]
+    tr
+      td= data['effectiveDate']
+      each waluta in ceny
+        each list in waluta
+          if list['effectiveDate'] == data['effectiveDate']
+            td= ((list['bid']+list['ask'])/2).toFixed(4)
+
