@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>
+      Form
+    </title>
+    <script>
+ 
+    function zapytaj() {
+      const area = document.getElementById("area").value;
+      const location = document.getElementById("location").value;
+      fetch(`/ask?area=${area}&location=${location}`)
+            .then(res => res.text())
+            .then(data => {
+              var d = ''
+              if(data == "Error") d = 'Blad przy zapytaniu do API';
+              else d = data;
+              console.log(d);
+				d += ' ';
+			  var systemDate = new Date()
+              document.querySelector("#dataSerwer").textContent = d;
+			  document.querySelector("#dataLokalna").textContent = systemDate;
+            });
+    }
+
+    function klik() {
+      setInterval(() => zapytaj(), 1000);
+    }
+
+    </script>
+  </head>
+  <body>
+    <main>
+		
+      <p id="dataSerwer"></p>
+	  <p id="dataLokalna"></p>
+
+	  Area (London): </br> <input type="text" id="area"></br> </br>
+	  Location (Europe): </br> <input type="text" id="location"></br> </br>
+      <button onclick="klik()">Zapytaj</button>
+
+
+    </main>
+  </body>
+
+</html>
