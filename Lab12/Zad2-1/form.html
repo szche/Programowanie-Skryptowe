@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>
+      Form
+    </title>
+    <script>
+
+
+    /*****************************************************************/
+    /* The function that processes the AJAX response from the server */
+    /*****************************************************************/
+    function response(xhr) {
+      try {
+        if (xhr.readyState == XMLHttpRequest.DONE) { // If the response is ready
+          if (xhr.status == 200) {                   // If the request was correct
+
+            // If the data you receive is a plain text or a JSON document, use the following code
+            var received_data = xhr.responseText; // Get a response in the form of a string
+            window.alert(received_data);          // and display it
+
+            // If the data you receive is an HTML or XML document, use the following code
+            // var xmlDoc = xhr.responseXML; //Receive the answer in the form of object 'XmlDocument', which can be accessed using DOM methods - see https://www.w3.org/TR/domcore/
+            // console.log(xmlDoc);
+          }
+          else
+            window.alert('There was a problem with this request.');
+        }
+      }
+      catch (e) {
+        window.alert('Exception caught: ' + e.description);
+      }
+    }
+
+
+
+    function AJAX_GET() {
+      var imie = document.getElementById("imie").value;
+      imie = encodeURI(imie);
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = () => response(xhr);
+      xhr.open('GET', `/submit?imie=${imie}`, true);
+      xhr.send();
+    }
+
+    function AJAX_POST() {
+      var imie = document.getElementById("imie").value;
+      imie = encodeURI(imie);
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = () => response(xhr);
+      xhr.open("POST", "submit", true);
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhr.send(imie);
+
+    }
+
+    function FETCH_GET() {
+        var imie = document.getElementById("imie").value;
+        imie = encodeURI(imie);
+        fetch(`/submit?imie=${imie}`)
+            .then(odp => {
+                odp.text().then(function (text) {
+                    alert(text);
+                });
+            });
+    }
+
+    function FETCH_POST() {
+        var imie = document.getElementById("imie").value;
+        imie = encodeURI(imie);
+        fetch('/submit', {
+            method: 'POST',
+            body: imie
+        })
+        .then(odp => {
+                odp.text().then(function (text) {
+                    alert(text);
+                });
+            });
+
+    }
+
+    function zapytaj() {
+      const area = document.getElementById("area").value;
+      const location = document.getElementById("location").value;
+      fetch(`/ask?area=${area}&location=${location}`)
+            .then(odp => {
+                odp.text().then(function (text) {
+                    console.log(text);
+                    alert(text);
+                });
+            });
+
+    }
+
+
+    </script>
+  </head>
+  <body>
+    <main>
+
+        Area: <input type="text" id="area"></br> </br>
+        Location: <input type="text" id="location"></br> </br>
+        <button onclick="zapytaj()">Dalej</button>
+
+
+    </main>
+  </body>
+</html>
