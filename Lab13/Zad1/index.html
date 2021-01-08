@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8">
+    <title>
+      Tytuł strony
+    </title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+          crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  </head>
+  <body>
+    <script>
+	var tresc;
+	var bg_kolor;
+	
+    $(document).ready(function () {
+      alert("The current document is ready for processing");
+	  
+	  //Jeżeli kursor myszy znajduje się ponad treścią elementu, to
+	  $("span").mouseover(function () {
+		//zapamiętywana jest treść oraz kolorystyka elementu
+		tresc = $(this).text();
+		bg_kolor = $( this ).css( "background-color" );
+		
+		//jeżeli aktualna treść jest liczbą, to jest ona zastępowana liczbą o 10 większą
+		//jeśli aktualna treść nie jest liczbą, to jest ona zastępowana napisem "Nie-liczba"
+		if( isNaN(tresc) ) $(this).text("Nie-liczba");
+		else $(this).text(parseInt(tresc) + 10);
+		
+		//ustawiany jest czerwony kolor tła (dla zawartego tam tekstu)
+		$(this).css('background-color', 'red');
+	});
+	  
+	  //Jeżeli kursor myszy opuszcza obszar elementu, to ma być przywracana oryginalna treść oraz kolorystyka
+	  $("span").mouseout(function () {
+		$(this).text( tresc );
+		$(this).css('background-color', bg_kolor);
+		
+	});
+	  
+	  //W przypadku kliknięcia zawartości elementu ma zostać uruchomiona prosta animacja: 
+	  //szerokość i wysokość obszaru zmieniają się od aktualnej wartości aż do 250px
+	  $("span").click(function () {
+		$(this).animate({
+				height: '250px',
+				width: '250px'
+			  });
+	});
+	  
+    });
+	
+	
+	
+    </script>
+    <main>
+      Text <span id='elementSPAN'>123</span>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+          crossorigin="anonymous"></script>
+  </body>
+</html>
