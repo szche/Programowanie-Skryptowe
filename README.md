@@ -17,7 +17,7 @@ Zadania wykonane na zajęcia z Programowania Skryptowego w 3 semestrze Cyberbezp
 |Lab 9| 5 |
 |Lab 10| 5  |
 |Lab 11| 4 |
-|Lab 12|  |
+|Lab 12| 5 |
 |Lab 13|  |
 |Lab 14|  |
 
