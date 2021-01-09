@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>
+      Form
+    </title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+      table {
+        border-spacing: 10px;
+      }
+      td {
+        min-width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+		
+      <div id="tabelaDiv"></div></br>
+
+	  Id: </br> <input type="text" id="id"></br> </br>
+    <button id="send">Wyślij</butrton>
+
+
+    </main>
+  </body>
+
+  <script>
+
+    $("#send").click(function () {
+      const id = $("#id").val();
+      var request = $.ajax({
+        url: "ask",
+        method: "GET",
+        data: {id:id},
+      });
+ 
+      request.done(function( data ) {
+        $id = $(data).find( "identifier" );
+        $datestamp = $(data).find( "datestamp" );
+        $setSpec = $(data).find( "setSpec" );
+        $status = $(data).find("header")[0]['attributes']['status']['value'];
+        // console.log( $id.text() );
+        // console.log( $datestamp.text() );
+        // console.log( $setSpec.text() );
+        // console.log($status);
+
+        const tabela = [
+          ['identifier', $id.text()],
+          ['datestamp', $datestamp.text()],
+          ['setSpec', $setSpec.text()],
+          ['status', $status]
+        ];
+
+        var content = "<table>";
+        for(var i=0; i < tabela.length; i++) {
+          content += `<tr><td>${tabela[i][0]}</td><td>${tabela[i][1]}</td></tr>`;
+        }
+        content += "</table>"
+        $("#tabelaDiv").html(content);
+
+      });
+      
+      request.fail(function( jqXHR, textStatus ) {
+        $("#tabelaDiv").text("Blad w zapytaniu:" + textStatus);
+      });
+
+
+    });
+ 
+    </script>
+
+</html>
