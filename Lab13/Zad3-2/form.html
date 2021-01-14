@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>
+      Form
+    </title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+    crossorigin="anonymous">
+    <style>
+      table {
+        border-spacing: 10px;
+      }
+      td {
+        min-width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+		
+      <div id="tabelaDiv"></div></br>
+
+    Plik: <input type="text" id="plik" class="formularz"> </br> </br>
+    Napis: <input type="text" id="napis" class="formularz"></br> </br>
+
+    </div>
+  </body>
+
+  <script>
+
+    $(".formularz").keyup(function() {
+      const plik = $("#plik").val();
+      const napis = $("#napis").val();
+      console.log(plik, napis);
+      var request = $.ajax({
+        url: "ask",
+        method: "GET",
+        data: {plik: plik,
+                napis: napis},
+      });
+
+      request.done(function( data ) {
+        $("#tabelaDiv").html(data);
+
+      });
+      
+      request.fail(function( jqXHR, textStatus ) {
+        $("#tabelaDiv").text("Blad w zapytaniu:" + textStatus);
+      });
+
+
+    });
+ 
+    </script>
+
+</html>
