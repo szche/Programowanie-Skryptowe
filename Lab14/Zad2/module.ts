@@ -66,43 +66,50 @@ export class Timetable implements ITimetable {
   }
 
   busy(date: Date) {
-    const arg_time = time(date);
+    const arg_time = date.getTime();
+    //console.log("arg time: ", arg_time);
     for (let meeting of this.table) {
-      const meet_start_time = time(meeting.date);
-      const meet_end_time = meet_start_time + meeting.duration;
-      if(arg_time > meet_start_time && arg_time < meet_end_time) return true;
+      const meet_start_time = meeting.date.getTime();
+      const meet_end_time = meet_start_time + (meeting.duration*60*1000);
+      //console.log("Meet start and end: ", meet_start_time, meet_end_time);
+      if(arg_time >= meet_start_time && arg_time <= meet_end_time) 
+      {
+        //console.log("BUSY");
+        return true;
+      }
     }
-    console.log("NOT BUSY");
+    //console.log("NOT BUSY");
     return false;
   }
 
   put(meeting: Meeting) {
-    console.log(this.table);
     if( this.busy(meeting.date) == true ) return false;
     this.table.push(meeting);
-    console.log("Tablica: ", this.table);
+    //console.log("Tablica: ", this.table);
     return true;
   }
 
   get(date: Date) {
+    const arg_time = date.getTime();
     for (let meeting of this.table) {
-      if(meeting.date == date) return meeting;
+      if(meeting.date.getTime() == arg_time) 
+        {
+          return meeting;
+        }
     }
     return {title:"Empty", date: new Date(0, 0, 0, 0, 0), duration: 0};
   }
 
   perform(actions: Array<Action>) {
     for (var _c = 0; _c < actions.length; _c++) {
-      const action = actions[_c];
-      if( _c >= this.table.length ) _c = _c%this.table.length;
-      const meeting = this.table[_c];
+      const counter = _c % this.table.length;
+      const action = actions[counter];
+      const meeting = this.table[counter];
       const meeting_moved = move(meeting, action);
       if( this.canBeTransferredTo(meeting_moved.date) == false) continue;
-      this.table.splice(_c, 1);
+      this.table.splice(counter, 1);
       this.put(meeting_moved);
     }
-
-
   }
 
 }
