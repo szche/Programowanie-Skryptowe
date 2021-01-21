@@ -20,6 +20,8 @@ Zadania wykonane na zajęcia z Programowania Skryptowego w 3 semestrze Cyberbezp
 |Lab 12| 5 |
 |Lab 13| 4 |
 |Lab 14| 3 |
+
+
 Ogólna ocena: 92.15% (5.0)
 
 
