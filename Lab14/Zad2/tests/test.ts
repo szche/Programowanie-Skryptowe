@@ -36,15 +36,15 @@ describe('Testy', function() {
 
     it('PERFORM', function() {
         const actions: Array<Action> = [Action.DAY_EARLIER, Action.DAY_LATER, Action.HOUR_EARLIER];
-        const expected_meet1: Meeting = {title:"Programowanie Skryptowe - Lab", date: new Date(2021, 1, 13, 13, 20), duration: 90};
-        const expected_meet2: Meeting = {title:"Systemy Operacyjne", date: new Date(2021, 1, 13, 8, 0), duration: 90};
+        const expected_meet1: Meeting = {title:"Programowanie Skryptowe - Lab", date: new Date(2021, 1, 12, 13, 20), duration: 90};
+        const expected_meet2: Meeting = {title:"Systemy Operacyjne", date: new Date(2021, 1, 14, 8, 0), duration: 90};
 
         timetable.perform(actions);
         const perform_meet1 = timetable.table[0];
         const perform_meet2 = timetable.table[1];
 
-        expect( perform_meet1.date.getDate() ).equal( expected_meet1.date.getDate()-1 );
-        expect( perform_meet2.date.getDate() ).equal( expected_meet2.date.getDate()-1 );
+        expect( perform_meet1.date.getDate() ).equal( expected_meet1.date.getDate() );
+        expect( perform_meet2.date.getDate() ).equal( expected_meet2.date.getDate() );
 
     });
 

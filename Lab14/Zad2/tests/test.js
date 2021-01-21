@@ -29,11 +29,11 @@ describe('Testy', function () {
     it('PERFORM', function () {
         var actions = [module_1.Action.DAY_EARLIER, module_1.Action.DAY_LATER, module_1.Action.HOUR_EARLIER];
         var expected_meet1 = { title: "Programowanie Skryptowe - Lab", date: new Date(2021, 1, 13, 13, 20), duration: 90 };
-        var expected_meet2 = { title: "Systemy Operacyjne", date: new Date(2021, 1, 14, 8, 0), duration: 90 };
+        var expected_meet2 = { title: "Systemy Operacyjne", date: new Date(2021, 1, 13, 8, 0), duration: 90 };
         timetable.perform(actions);
         var perform_meet1 = timetable.table[0];
         var perform_meet2 = timetable.table[1];
         chai_1.expect(perform_meet1.date.getDate()).equal(expected_meet1.date.getDate() - 1);
-        chai_1.expect(perform_meet1.date.getHours()).equal(expected_meet1.date.getHours() + 1);
+        chai_1.expect(perform_meet2.date.getDate()).equal(expected_meet2.date.getDate() - 1);
     });
 });

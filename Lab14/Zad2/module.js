@@ -26,7 +26,7 @@ var move = function (meet, ac) {
         meet.date.setHours(meet.date.getHours() - 24);
     }
     else {
-        meet.date.setHours(meet.date.getHours() - 24);
+        meet.date.setHours(meet.date.getHours() + 24);
     }
     return meet;
 };
